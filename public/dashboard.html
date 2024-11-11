@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body onload="displayBalance()">
+    <div class="dashboard-container">
+
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="profile">
+                <img src="./icons/blockchain.png" alt="Profile Picture">
+                <span>GCIT EcuChain</span>
+            </div>
+            <div class="notification">
+                <img src="./icons/arrow.png" alt="logout" title="Click to Logout" onclick="logout()">
+            </div>
+
+        </header>
+
+        <!-- Card Section (Displays balance) -->
+        <div class="card-container">
+            <div class="card">
+                <div class="card-content">
+                    <h4>Email:</h4>
+                    <br>
+                    <p>Blockchain Address:</p>
+                    <div class="balance" id="balance">Balance:</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Grid -->
+        <div class="actions-grid">
+            <div class="action-item" onclick="generateQRCode()">
+                <img src="./icons/qr-code.png" alt="Generate QR">
+                <p>Generate QR</p>
+            </div>
+            <div class="action-item" onclick="startQrScanner()">
+                <img src="./icons/qr.png" alt="Scan QR">
+                <p>Send (Scan QR)</p>
+            </div>
+            <!-- Additional placeholder items for dashboard functions -->
+            <div class="action-item"><img src="./icons/buy.png" alt="">
+                <p>Buy Crypto</p>
+            </div>
+            <div class="action-item"><img src="./icons/earning.png" alt="">
+                <p>Invest</p>
+            </div>
+            <div class="action-item"><img src="./icons/cash-withdrawal.png" alt="">
+                <p>Withdraw</p>
+            </div>
+            <div class="action-item"><img src="./icons/exchange.png" alt="">
+                <p>Exchange</p>
+            </div>
+            <div class="action-item"><img src="./icons/trade.png" alt="">
+                <p>Trade</p>
+            </div>
+            <div class="action-item"><img src="./icons/piggy-bank.png" alt="">
+                <p>Save online</p>
+            </div>
+        </div>
+
+        <!-- QR Code Display Container (Initially Hidden) -->
+        <div id="qrContainer" class="qr-popup" style="display: none;">
+            <h3>Your QR Code</h3>
+            <canvas id="qrCode"></canvas>
+            <div>
+                <button onclick="closeQrPopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- QR Code Scanner Container (Initially Hidden) -->
+        <div id="qrScannerContainer" class="qr-popup" style="display: none;">
+            <h3>QR Code Scanner</h3>
+            <div id="qr-reader" style="width: 300px; margin: auto;"></div>
+            <button onclick="stopQrScanner()">Stop Scanning</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span class="footer-text">© 2024 AlrightReserve | Powered by <strong>EudChain</strong></span>
+        </footer>
+
+
+    </div>
+</body>
+
+</html>

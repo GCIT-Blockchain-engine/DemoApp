@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div class="container login-container"> <!-- Added class `login-container` -->
+        <!-- Header Section -->
+        <div class="header">
+            <h2>Welcome Back</h2>
+
+            <div class="icon-container">
+                <img src="./icons/login.png" alt="Lock Icon">
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <form onsubmit="event.preventDefault(); login();">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <p class="forgot-password">Forgot your password?</p>
+            <button type="submit">Sign in</button>
+        </form>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+        </div>
+
+  
+
+    </div>
+</body>
+
+</html>

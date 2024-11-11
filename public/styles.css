@@ -1,0 +1,218 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f6f9;
+}
+
+/* Container Styling for Login and Register */
+.container.login-container, .container.register-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Header Section Styling */
+.header {
+    background-color: #4b2be9;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    color: #ffffff;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.header h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.header .subtext {
+    font-size: 0.9em;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.icon-container {
+    width: 80px;
+    height: 80px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.icon-container img {
+    width: 50%;
+    height: 50%;
+}
+
+/* Form Input Fields */
+form input[type="email"],
+form input[type="password"],
+form input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 1em;
+    background-color: #f4f6f9;
+    color: #333;
+    outline: none;
+    transition: border 0.3s;
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="text"]:focus {
+    border-color: #4b2be9;
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    background-color: #b0b7ff;
+    color: #ffffff;
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #4b2be9;
+}
+
+/* Footer Section */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.footer a {
+    color: #4b2be9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Terms and Conditions */
+.terms {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 10px;
+}
+
+.terms a {
+    color: #4b2be9;
+    text-decoration: none;
+}
+
+/* Fingerprint Icon (only for login) */
+.fingerprint {
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+}
+
+
+/* Alert Modal Styling */
+.alert-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-content {
+    width: 80%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+.close-alert {
+    color: #aaa;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.alert-content h2 {
+    font-size: 1.5em;
+    color: #4b2be9;
+    margin-bottom: 10px;
+}
+
+.alert-content p {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.alert-content button {
+    background-color: #4b2be9;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.alert-content button:hover {
+    background-color: #6a4be9;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

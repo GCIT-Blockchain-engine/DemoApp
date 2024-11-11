@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div class="container register-container">
+        <!-- Header Section -->
+        <div class="header">
+            <h2>Welcome to us</h2>
+            <p class="subtext">Hello there, create a new account</p>
+            <div class="icon-container">
+                <img src="./icons/refer.png" alt="Register Icon">
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <form onsubmit="event.preventDefault(); register();">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="address" placeholder="Blockchain Address" required>
+            <input type="text" id="privateKey" placeholder="Private Key" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Sign up</button>
+            <p class="terms">By creating an account you agree to our <a href="#">Terms and Conditions</a></p>
+        </form>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Already have an account? <a href="login.html">Sign In</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
