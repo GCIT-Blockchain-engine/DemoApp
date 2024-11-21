@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    
 }
 
 body, html {
@@ -14,12 +15,11 @@ body, html {
     min-height: 100vh;
 }
 
-/* Dashboard Container */
 .dashboard-container {
     width: 80%; /* Full width for desktop view */
     max-width: 1200px;
     margin: 20px auto;
-    background-color: #f4f6f9;
+    background-color: #b6b8bcd6;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -29,7 +29,7 @@ body, html {
 
 /* Header */
 .dashboard-header {
-    background-color: #4b2be9;
+    background-color: #000000;
     color: white;
     padding: 20px;
     display: flex;
@@ -76,7 +76,7 @@ body, html {
 }
 
 .card {
-    background-color: #4b2be9;
+    background-color: #000000;
     color: white;
     border-radius: 15px;
     padding: 30px;
@@ -87,6 +87,10 @@ body, html {
     justify-content: space-between;
     align-items: center;
 }
+/* .card p {
+    font-family: 'Source Code Pro', monospace;
+
+} */
 
 .card-content {
     display: flex;
@@ -114,6 +118,15 @@ body, html {
     font-weight: bold;
 }
 
+/* Style for the eye icon */
+.eye-icon {
+    margin-left: 353px;
+    margin-top: -20px;
+    font-size: 20px;
+    cursor: pointer;
+    vertical-align: middle; /* Align with the text */
+}
+
 .visa-logo {
     width: 80px;
     opacity: 0.8;
@@ -131,7 +144,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -150,7 +163,7 @@ body, html {
 
 .action-item p {
     font-size: 1em;
-    color: #333;
+    color: #5fe79c;
 }
 
 /* QR Code and Scanner Pop-Up Styling */
@@ -172,11 +185,144 @@ body, html {
 .qr-popup button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #4b2be9;
+    background-color: #22c55e;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+/* Modal Styling */
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    overflow: auto; /* Enable scroll for content larger than the modal */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* Center the modal vertically and horizontally */
+    padding: 40px;
+    border: 1px solid #888;
+    width: 80%; /* Adjust width as needed */
+    max-height: 70%; /* Ensure content fits in smaller screens */
+    overflow: auto; /* Scrollable content */
+    border-radius: 8px;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Table inside Modal */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scroll for tables */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Fixed column sizes */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    overflow: hidden; /* Still handles overflow gracefully */
+    word-wrap: break-word; /* Allows wrapping of long words */
+    white-space: normal; /* Ensures text can wrap to the next line */
+    font-family: 'Source Code Pro', monospace;
+}
+
+
+tbody tr {
+    height: 100px; /* Increased row height */
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping */
+}
+.popup-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 90%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    padding: 20px;
+}
+
+.popup-modal-content {
+    position: relative;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+}
+
+.popup-modal-content h3 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.popup-modal-content p {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.popup-modal-content button {
+    background-color: #5fe79c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup-modal-content button:hover {
+    background-color: #22c55e;
 }
 
 /* Footer */
@@ -216,6 +362,7 @@ body, html {
     color: #4b2be9;
     vertical-align: middle;
 }
+
 
 
 /* Responsive Design */
@@ -308,4 +455,82 @@ body, html {
     .nav-item img {
         width: 20px;
     }
+}
+
+
+/* Modal Container */
+.modal {
+    position: fixed;
+    z-index: 1000; /* Ensures the modal overlays other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enables scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Close Button */
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Form Styles */
+#transactionForm label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#transactionForm input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    background-color: #f4f6f9;
+}
+
+#transactionForm button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+#transactionForm button:hover {
+    background-color: #45a049;
 }

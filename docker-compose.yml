@@ -1,0 +1,9 @@
+version: '3'
+services:
+  backend:
+    build: ./
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./backend:/app
+    working_dir: /app

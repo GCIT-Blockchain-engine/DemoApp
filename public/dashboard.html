@@ -6,34 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- External Libraries -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+
+    <!-- Your Custom JavaScript -->
     <script src="app.js" defer></script>
+
 </head>
 
-<body onload="displayBalance()">
+<body>
     <div class="dashboard-container">
 
         <!-- Header Section -->
         <header class="dashboard-header">
             <div class="profile">
                 <img src="./icons/blockchain.png" alt="Profile Picture">
-                <span>GCIT EcuChain</span>
+                <span>GCIT EduChain</span>
             </div>
             <div class="notification">
-                <img src="./icons/arrow.png" alt="logout" title="Click to Logout" onclick="logout()">
+                <img src="./icons/arrow.png" alt="Logout" title="Click to Logout" onclick="logout()">
             </div>
-
         </header>
 
-        <!-- Card Section (Displays balance) -->
+        <!-- Card Section (Displays Email, Blockchain Address, and Balance) -->
         <div class="card-container">
             <div class="card">
                 <div class="card-content">
-                    <h4>Email:</h4>
+                    <h4 id="userEmail">
+                        Email:
+                    </h4>
+                    <i class="eye-icon" id="toggleVisibility" onclick="toggleVisibility()">👁️</i>
                     <br>
-                    <p>Blockchain Address:</p>
-                    <div class="balance" id="balance">Balance:</div>
+                    <p id="userPublicKey">Public Key: </p>
+                    <p id="userPrivateKey">Private Key: </p>
+                    <div class="balance" id="balance">Balance: </div>
                 </div>
             </div>
         </div>
@@ -48,28 +57,36 @@
                 <img src="./icons/qr.png" alt="Scan QR">
                 <p>Send (Scan QR)</p>
             </div>
-            <!-- Additional placeholder items for dashboard functions -->
-            <div class="action-item"><img src="./icons/buy.png" alt="">
-                <p>Buy Crypto</p>
+            <!-- Additional Action Items -->
+            <div class="action-item" onclick="getTransactionHistory()">
+                <img src="./icons/report.png" alt="Transaction History">
+                <p>Transaction History</p>
             </div>
-            <div class="action-item"><img src="./icons/earning.png" alt="">
+
+            <div class="action-item" onclick="showComingSoonPopup()">
+                <img src="./icons/earning.png" alt="Invest">
                 <p>Invest</p>
             </div>
-            <div class="action-item"><img src="./icons/cash-withdrawal.png" alt="">
+            <div class="action-item" onclick="showComingSoonPopup()">
+                <img src="./icons/cash-withdrawal.png" alt="Withdraw">
                 <p>Withdraw</p>
             </div>
-            <div class="action-item"><img src="./icons/exchange.png" alt="">
+            <div class="action-item" onclick="showComingSoonPopup()">
+                <img src="./icons/exchange.png" alt="Exchange">
                 <p>Exchange</p>
             </div>
-            <div class="action-item"><img src="./icons/trade.png" alt="">
+            <div class="action-item" onclick="showComingSoonPopup()">
+                <img src="./icons/trade.png" alt="Trade">
                 <p>Trade</p>
             </div>
-            <div class="action-item"><img src="./icons/piggy-bank.png" alt="">
+            <div class="action-item" onclick="showComingSoonPopup()">
+                <img src="./icons/piggy-bank.png" alt="Save online">
                 <p>Save online</p>
             </div>
         </div>
 
-        <!-- QR Code Display Container (Initially Hidden) -->
+
+        <!-- QR Code Display Container -->
         <div id="qrContainer" class="qr-popup" style="display: none;">
             <h3>Your QR Code</h3>
             <canvas id="qrCode"></canvas>
@@ -78,6 +95,7 @@
             </div>
         </div>
 
+
         <!-- QR Code Scanner Container (Initially Hidden) -->
         <div id="qrScannerContainer" class="qr-popup" style="display: none;">
             <h3>QR Code Scanner</h3>
@@ -85,13 +103,594 @@
             <button onclick="stopQrScanner()">Stop Scanning</button>
         </div>
 
+        <!-- Transaction Form Modal (Initially Hidden) -->
+        <div id="transactionFormModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeTransactionForm()">&times;</span>
+                <h3>New Transaction</h3>
+                <form id="transactionForm">
+                    <label for="recipientAddress">Recipient Address:</label>
+                    <input type="text" id="recipientAddress" name="recipientAddress" required>
+
+                    <label for="privateKey">Your Private Key:</label>
+                    <input type="password" id="privateKey" name="privateKey" required>
+
+                    <label for="publicKey">Your Public Key:</label>
+                    <input type="text" id="publicKey" name="publicKey" required>
+
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" min="0" step="0.0001" required>
+
+                    <button type="submit" id="submitTransactionButton">Send</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Custom Alert Modal -->
+        <div id="customAlert" class="alert-modal" style="display: none;">
+            <div class="alert-content">
+                <span class="close-alert" onclick="closeAlert()">&times;</span>
+                <h2 id="alertTitle">Error</h2>
+                <p id="alertMessage">An error occurred.</p>
+                <button onclick="closeAlert()">OK</button>
+            </div>
+        </div>
+
+        <!-- Transaction History Modal -->
+        <div id="transactionHistoryModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeTransactionHistory()">&times;</span>
+                <h3>Transaction History</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Transaction ID</th>
+                                <th>Sender</th>
+                                <th>Recipient</th>
+                                <th>Amount</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionHistoryTable">
+                            <!-- Transaction rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Coming Soon Popup -->
+        <div id="comingSoonPopup" class="popup-modal" style="display: none;">
+            <div class="popup-modal-content">
+                <span class="close-popup" onclick="closeComingSoonPopup()">&times;</span>
+                <h3>Coming Soon</h3>
+                <p>This feature will be available in the future. Stay tuned for updates!</p>
+                <button onclick="closeComingSoonPopup()">OK</button>
+            </div>
+        </div>
+
+
+
+
+
+
         <!-- Footer -->
         <footer class="footer">
-            <span class="footer-text">© 2024 AlrightReserve | Powered by <strong>EudChain</strong></span>
+            <span class="footer-text">© 2024 AllrightsReserve | Powered by <strong>EduChain</strong></span>
         </footer>
-
-
     </div>
 </body>
+
+<script>
+    window.displayUserData = async function () {
+        console.log("DisplayUserData function called");
+
+        // Fetch token from localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.warn("No token found, redirecting to login");
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            // Fetch user data from the API
+            const response = await fetch(`${BASE_URL}/user`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // Log the response for debugging
+            console.log("Response status:", response.status);
+
+            const user = await response.json();
+
+
+            if (response.ok) {
+                console.log("User data fetched successfully:", user);
+
+                // Update the dashboard with user details
+                document.getElementById("userEmail").textContent = `Email: ${user.email || "N/A"}`;
+                document.getElementById("userPublicKey").style.fontFamily = "'Source Code Pro', monospace";
+                document.getElementById("userPrivateKey").style.fontFamily = "'Source Code Pro', monospace";
+
+                document.getElementById("userPublicKey").textContent = `Public Key: ${user.publicKey || "Not Generated"}`;
+                document.getElementById("userPrivateKey").textContent = `Private Key: ${user.privateKey || "Not Generated"}`;
+
+            } else {
+                console.error(`Failed to fetch user data:`, user);
+                showAlert("Error", `Failed to load user data: ${user.message || response.statusText}`);
+                if (response.status === 401) {
+                    console.warn("Unauthorized access, redirecting to login");
+                    window.location.href = 'login.html';
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            showAlert("Error", "An error occurred while loading user data. Please try again.");
+        }
+    };
+
+    // Function to display a custom alert
+    function showAlert(title, message) {
+        document.getElementById('alertTitle').textContent = title;
+        document.getElementById('alertMessage').textContent = message;
+        document.getElementById('customAlert').style.display = 'block';
+    }
+
+    // Function to close the custom alert
+    function closeAlert() {
+        document.getElementById('customAlert').style.display = 'none';
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', displayUserData);
+
+
+    window.displayBalance = async function () {
+        console.log("displayBalance function called");
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showAlert("Authentication Error", "You need to log in first.");
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            const userResponse = await fetch(`${BASE_URL}/user`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const user = await userResponse.json();
+
+            if (userResponse.ok && user.publicKey) {
+                const publicKey = user.publicKey;
+
+                // Fetch updated balance using the public key
+                const balanceResponse = await fetch(`${BLOCKCHAIN_API_URL}/balance/${publicKey}`);
+                const balanceData = await balanceResponse.json();
+
+                if (balanceResponse.ok && balanceData.balance !== undefined) {
+                    const balanceElement = document.getElementById('balance');
+                    if (balanceElement) {
+                        balanceElement.textContent = `Balance: ${balanceData.balance} Coins`;
+                    }
+                } else {
+                    showAlert("Error", "Unable to fetch updated balance. Please try again later.");
+                }
+            } else {
+                showAlert("Error", "Public Key not available. Generate keys first.");
+            }
+        } catch (error) {
+            console.error("Error fetching balance:", error);
+            showAlert("Error", "An error occurred while fetching the balance.");
+        }
+    };
+
+
+    // Generate QR Code function
+    window.generateQRCode = async function () {
+        console.log("GenerateQRCode function called");
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showAlert("Authentication Error", "You need to log in first.");
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            // Fetch user data from the API
+            const response = await fetch(`${BASE_URL}/user`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                console.error("Error fetching user data for QR Code:", errorMessage);
+                showAlert("Error", "Unable to fetch user data. Please try again.");
+                return;
+            }
+
+            const user = await response.json();
+            console.log("User data for QR Code:", user);
+
+            // Check if public address exists
+            if (!user.publicKey) {
+                showAlert("Error", "Public address not found for this user.");
+                return;
+            }
+
+            // Get QR code container and canvas elements
+            const qrContainer = document.getElementById('qrContainer');
+            const qrCodeCanvas = document.getElementById('qrCode');
+            if (!qrContainer || !qrCodeCanvas) {
+                console.error("QR container or canvas not found");
+                showAlert("Error", "QR Code elements not found.");
+                return;
+            }
+
+            // Clear previous QR code if any
+            qrCodeCanvas.width = qrCodeCanvas.width; // Resets the canvas to clear it
+
+            // Embed the public address in the QR code
+            new QRious({
+                element: qrCodeCanvas,
+                size: 200,
+                value: user.publicKey // Embed the public address in the QR code
+            });
+
+            // Display the QR code container
+            qrContainer.style.display = 'block';
+            console.log("QR Code generated and displayed with public address.");
+        } catch (error) {
+            console.error("Error fetching user data or generating QR code:", error);
+            showAlert("Error", "An error occurred while generating the QR code. Please try again.");
+        }
+    };
+
+    window.closeQrPopup = function () {
+        console.log("CloseQrPopup function called");
+        const qrContainer = document.getElementById('qrContainer');
+        if (qrContainer) {
+            qrContainer.style.display = 'none';
+        }
+    }
+
+
+    window.startQrScanner = function () {
+        console.log("StartQrScanner function called");
+
+        const qrScannerContainer = document.getElementById('qrScannerContainer');
+        if (!qrScannerContainer) {
+            console.error("QR scanner container not found");
+            return;
+        }
+
+        qrScannerContainer.style.display = 'block'; // Show the scanner container
+
+        // Initialize the QR scanner
+        html5QrCode = new Html5Qrcode("qr-reader");
+
+        html5QrCode.start(
+            { facingMode: "environment" }, // Use the rear camera on mobile devices
+            {
+                fps: 15, // Increased frame rate for smoother scanning
+                qrbox: { width: 300, height: 300 } // Adjusted QR code scanning box size
+            },
+            qrCodeMessage => {
+                if (qrCodeMessage) {
+                    console.log("QR Code scanned successfully:", qrCodeMessage);
+
+                    // Show the transaction form with the scanned recipient address
+                    showTransactionForm(qrCodeMessage);
+                    stopQrScanner(); // Stop the scanner after a successful scan
+                } else {
+                    console.log("No QR Code detected. Retrying...");
+                }
+            },
+            errorMessage => {
+                console.error(`QR Code scan error: ${errorMessage}`);
+                // Display additional details for debugging
+            }
+        ).catch(err => {
+            console.error("Error starting QR scanner:", err);
+            showAlert("Unable to access camera", "Please check permissions and try again.");
+        });
+    };
+
+    window.startQrScanner = function () {
+        console.log("StartQrScanner function called");
+
+        const qrScannerContainer = document.getElementById('qrScannerContainer');
+        if (!qrScannerContainer) {
+            console.error("QR scanner container not found");
+            return;
+        }
+
+        qrScannerContainer.style.display = 'block'; // Show the scanner container
+
+        // Initialize the QR scanner
+        html5QrCode = new Html5Qrcode("qr-reader");
+
+        html5QrCode.start(
+            { facingMode: "environment" }, // Use the rear camera on mobile devices
+            {
+                fps: 15, // Increased frame rate
+                qrbox: { width: 350, height: 350 } // Larger scanning box
+            },
+            qrCodeMessage => {
+                if (qrCodeMessage) {
+                    console.log("QR Code scanned successfully:", qrCodeMessage);
+
+                    // Show the transaction form with the scanned recipient address
+                    showTransactionForm(qrCodeMessage);
+                    stopQrScanner(); // Stop the scanner after a successful scan
+                } else {
+                    console.log("No QR Code detected. Retrying...");
+                }
+            },
+            errorMessage => {
+                console.error(`QR Code scan error: ${errorMessage}`);
+                if (errorMessage.includes("MultiFormat Readers")) {
+                    console.warn("Ensure the QR code is visible and well-lit.");
+                }
+            }
+        ).catch(err => {
+            console.error("Error starting QR scanner:", err);
+            showAlert("Unable to access camera", "Please check permissions and try again.");
+        });
+    };
+    window.stopQrScanner = function () {
+        console.log("StopQrScanner function called");
+
+        if (html5QrCode) {
+            html5QrCode.stop()
+                .then(() => {
+                    const qrScannerContainer = document.getElementById('qrScannerContainer');
+                    if (qrScannerContainer) {
+                        qrScannerContainer.style.display = 'none'; // Hide the scanner container
+                    }
+                    html5QrCode = null; // Reset the QR code scanner instance
+                    console.log("QR Scanner stopped successfully.");
+                })
+                .catch(err => {
+                    console.error("Error stopping QR scanner:", err);
+                    showAlert("Error", "Unable to stop the QR scanner. Please try again.");
+                });
+        } else {
+            console.warn("QR scanner instance is not initialized.");
+        }
+    };
+
+    window.handleTransactionFormSubmit = async function () {
+        console.log("HandleTransactionFormSubmit function called");
+
+        // Collect form inputs
+        const recipient = document.getElementById('recipientAddress')?.value.trim(); // Scanned via QR code
+        const amount = parseFloat(document.getElementById('amount')?.value);
+        const private_key = document.getElementById('privateKey')?.value.trim(); // Logged-in user's private key
+        const sender = document.getElementById('publicKey')?.value.trim(); // Logged-in user's public address
+        const submitButton = document.getElementById('submitTransactionButton');
+
+        // Validate inputs
+        if (!recipient || isNaN(amount) || amount <= 0 || !private_key || !sender) {
+            console.error("Invalid input in transaction form.");
+            showAlert("Invalid Input", "Please ensure all fields are correctly filled.");
+            return;
+        }
+
+        // Prepare transaction data
+        const transactionData = {
+            sender,
+            recipient,
+            amount,
+            private_key
+        };
+        console.log("Transaction Data:", transactionData);
+
+        // Disable the submit button to prevent duplicate submissions
+        submitButton.disabled = true;
+
+        try {
+            // Call the backend API to create the transaction
+            const response = await fetch(`${BLOCKCHAIN_API_URL}/transaction/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transactionData)
+            });
+
+            const data = await response.json();
+            console.log("Transaction response:", data);
+
+            if (response.ok) {
+                // Successful transaction
+                showAlert("Transaction Successful", "Your transaction was completed successfully.");
+                closeTransactionForm(); // Close the transaction modal
+                displayBalance();
+
+            } else {
+                // Handle transaction failure
+                console.error("Transaction failed:", data.message);
+                showAlert("Transaction Failed", data.message || "An error occurred during the transaction.");
+            }
+        } catch (error) {
+            // Log and handle errors
+            console.error("Transaction error:", error);
+            showAlert("Error", "An error occurred while processing the transaction. Please try again.");
+        } finally {
+            submitButton.disabled = false;
+        }
+    };
+
+    // Attach form submit handler
+    document.getElementById('transactionForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        handleTransactionFormSubmit();
+    });
+
+    window.closeTransactionForm = function () {
+        console.log("CloseTransactionForm function called");
+        const transactionFormModal = document.getElementById('transactionFormModal');
+        if (transactionFormModal) {
+            transactionFormModal.style.display = 'none';
+            console.log("Transaction form modal closed.");
+        }
+    }
+
+    async function getTransactionHistory() {
+        let user = null; // Local variable to store user data
+
+        // Fetch user data if not already available
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please log in first.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const response = await fetch(`${BASE_URL}/user`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+
+            if (!response.ok) {
+                alert('Failed to fetch user data. Please try again.');
+                return;
+            }
+
+            user = await response.json(); // Assign fetched user data
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            alert('Error fetching user data. Please try again later.');
+            return;
+        }
+
+        // Check if user or publicKey is missing
+        if (!user || !user.publicKey) {
+            alert('User data is incomplete or missing. Please try again.');
+            return;
+        }
+
+        // Use publicKey for transaction fetching
+        const walletAddress = user.publicKey;
+        const transactionTable = document.getElementById("transactionHistoryTable");
+        transactionTable.innerHTML = ""; // Clear previous data
+
+        try {
+            // Fetch transaction history
+            const response = await fetch(`${BLOCKCHAIN_API_URL}/transactions/${walletAddress}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch transactions");
+            }
+
+            const { transactions } = await response.json();
+
+            // Populate the table
+            if (transactions.length === 0) {
+                transactionTable.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center;">No transactions found</td>
+                </tr>
+            `;
+            } else {
+                transactions.forEach(tx => {
+                    const row = `
+                    <tr>
+                        <td>${tx.transaction_id || "N/A"}</td>
+                        <td>${tx.sender}</td>
+                        <td>${tx.recipient}</td>
+                        <td>${tx.amount}</td>
+                        <td>${new Date(tx.timestamp * 1000).toLocaleString()}</td>
+                    </tr>
+                `;
+                    transactionTable.innerHTML += row;
+                });
+            }
+
+            // Show the modal
+            document.getElementById("transactionHistoryModal").style.display = "block";
+        } catch (error) {
+            console.error("Error fetching transaction history:", error);
+            alert("Failed to load transaction history. Please try again later.");
+        }
+    }
+
+    // Function to close the modal
+    function closeTransactionHistory() {
+        document.getElementById("transactionHistoryModal").style.display = "none";
+    }
+    // Function to show the "Coming Soon" popup
+    function showComingSoonPopup() {
+        document.getElementById("comingSoonPopup").style.display = "block";
+    }
+
+    // Function to close the "Coming Soon" popup
+    function closeComingSoonPopup() {
+        document.getElementById("comingSoonPopup").style.display = "none";
+    }
+
+    function toggleVisibility() {
+        const publicKey = document.getElementById("userPublicKey");
+        const privateKey = document.getElementById("userPrivateKey");
+        const balance = document.getElementById("balance");
+        const eyeIcon = document.getElementById("toggleVisibility");
+
+        // Check current visibility state (use data attribute)
+        const isHidden = eyeIcon.dataset.hidden === "true";
+
+        if (isHidden) {
+            // Show values
+            publicKey.textContent = `Public Key: ${publicKey.dataset.original}`;
+            privateKey.textContent = `Private Key: ${privateKey.dataset.original}`;
+            balance.textContent = `Balance: ${balance.dataset.original}`;
+            eyeIcon.textContent = "👁️"; // Change to open-eye icon
+            eyeIcon.dataset.hidden = "false";
+        } else {
+            // Hide values
+            publicKey.dataset.original = publicKey.textContent.replace("Public Key: ", "");
+            privateKey.dataset.original = privateKey.textContent.replace("Private Key: ", "");
+            balance.dataset.original = balance.textContent.replace("Balance: ", "");
+
+            publicKey.textContent = "Public Key: ************";
+            privateKey.textContent = "Private Key: ************";
+            balance.textContent = "Balance: ************";
+            eyeIcon.textContent = "🙈"; // Change to closed-eye icon
+            eyeIcon.dataset.hidden = "true";
+        }
+    }
+    const email = document.getElementById("emailValue");
+    const publicKey = document.getElementById("userPublicKey");
+    const privateKey = document.getElementById("userPrivateKey");
+    const balance = document.getElementById("balance");
+    const eyeIcon = document.getElementById("toggleVisibility");
+
+    const isHidden = email.dataset.hidden === "true";
+
+    if (isHidden) {
+        // Show values
+        email.textContent = "user@example.com"; // Replace with actual email value
+        publicKey.textContent = "Public Key: 1234-public-key"; // Replace with actual public key
+        privateKey.textContent = "Private Key: 1234-private-key"; // Replace with actual private key
+        balance.textContent = "Balance: $1000"; // Replace with actual balance
+        eyeIcon.textContent = "👁️"; // Change icon to open-eye
+        email.dataset.hidden = "false";
+    } else {
+        // Hide values
+        email.textContent = "****";
+        publicKey.textContent = "Public Key: ****";
+        privateKey.textContent = "Private Key: ****";
+        balance.textContent = "Balance: ****";
+        eyeIcon.textContent = "🙈"; // Change icon to closed-eye
+        email.dataset.hidden = "true";
+    }
+</script>
+
 
 </html>

@@ -11,7 +11,8 @@ body, html {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f6f9;
+    background: linear-gradient(to bottom, #000000, #136437);
+    /* background: linear-gradient(to bottom, #15b858, #000000); */
 }
 
 /* Container Styling for Login and Register */
@@ -20,14 +21,14 @@ body, html {
     max-width: 400px;
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 /* Header Section Styling */
 .header {
-    background-color: #4b2be9;
+    background-color: #000000;
     padding: 20px;
     border-radius: 20px 20px 0 0;
     color: #ffffff;
@@ -77,12 +78,13 @@ form input[type="text"] {
     padding: 15px;
     margin: 10px 0;
     border: 1px solid #ddd;
-    border-radius: 30px;
+    /* border-radius: 30px; */
     font-size: 1em;
     background-color: #f4f6f9;
     color: #333;
     outline: none;
     transition: border 0.3s;
+    border-radius: 10px;
 }
 
 form input[type="email"]:focus,
@@ -94,20 +96,20 @@ form input[type="text"]:focus {
 /* Button Styling */
 button {
     width: 100%;
-    background-color: #b0b7ff;
+    background-color: #5fe79c;
     color: #ffffff;
     border: none;
     padding: 15px;
     font-size: 1em;
     font-weight: bold;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #4b2be9;
+    background-color: #22c55e;
 }
 
 /* Footer Section */
@@ -119,7 +121,7 @@ button:hover {
 }
 
 .footer a {
-    color: #4b2be9;
+    color: #22c55e;
     font-weight: bold;
     text-decoration: none;
 }
@@ -186,7 +188,7 @@ button:hover {
 
 .alert-content h2 {
     font-size: 1.5em;
-    color: #4b2be9;
+    color: #000000;
     margin-bottom: 10px;
 }
 
@@ -197,18 +199,18 @@ button:hover {
 }
 
 .alert-content button {
-    background-color: #4b2be9;
+    background-color: #22c55e;
     color: #ffffff;
     border: none;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s;
 }
 
 .alert-content button:hover {
-    background-color: #6a4be9;
+    background-color: #5fe79c;
 }
 
 /* Fade-in animation */
