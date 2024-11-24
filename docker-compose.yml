@@ -1,9 +1,13 @@
 version: '3'
+
 services:
   backend:
-    build: ./
+    build:
+      context: ./  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - "5005:5005"
+      - "5005:5005"  # Expose the application's port
     volumes:
-      - ./backend:/app
+      - .:/app  # Map the entire project directory
     working_dir: /app
+    command: npm start  # Start the application
